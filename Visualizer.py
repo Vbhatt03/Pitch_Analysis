@@ -3,34 +3,44 @@ import open3d as o3d
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Load LAZ file
+# Load the LAZ file
 las = laspy.read("D:\\Quidich\\Point_Cloud\\1st_Time_Scan_3,4,5,6.laz")
 points = np.vstack((las.x, las.y, las.z)).transpose()
 
-# Define pitch bounding box based on orientation
-x_min, x_max = 379399.6, 379425.6  # 26m along X (length)
-y_min, y_max = 1702097.8, 1702102.8  # 5m along Y (width)
+# Region of interest (pitch area)
+x_min, x_max = 379407.71, 379425.49
+y_min, y_max = 1702083.45, 1702116.13
 
-# Mask the pitch region
-mask = (points[:, 0] >= x_min) & (points[:, 0] <= x_max) & \
-       (points[:, 1] >= y_min) & (points[:, 1] <= y_max)
+# Filter points in region + remove extreme Z outliers
+mask = (
+    (points[:, 0] >= x_min) & (points[:, 0] <= x_max) &
+    (points[:, 1] >= y_min) & (points[:, 1] <= y_max) &
+    (points[:, 2] <= 101)  # Z upper bound for removing spikes
+)
+region_points = points[mask]
+z = region_points[:, 2]
 
-pitch_points = points[mask]
+# ----- Optional: Percentile clipping for better contrast -----
+z_clip_min = np.percentile(z, 1)
+z_clip_max = np.percentile(z, 99)
+z_clipped = np.clip(z, z_clip_min, z_clip_max)
 
-# Remove Z outliers within pitch region
-z = pitch_points[:, 2]
-z_lower = np.percentile(z, 1)
-z_upper = np.percentile(z, 99)
-z_clipped = np.clip(z, z_lower, z_upper)
+# ----- Normalize for colormap -----
+norm_z = (z_clipped - z_clip_min) / (z_clip_max - z_clip_min + 1e-8)
+colors = plt.cm.viridis(norm_z)[:, :3]
 
-# Linear color mapping: low Z = light, high Z = red (use 'Reds' colormap)
-norm_z = (z_clipped - z_lower) / (z_upper - z_lower + 1e-8)
-colors = plt.cm.Reds(norm_z)[:, :3]  # Reds: light for low, red for high
+# Debug stats
+z_vals = np.sort(np.unique(z))
+z_diffs = np.diff(z_vals)
+print(f"Z range: {z.min():.4f} to {z.max():.4f}")
+print(f"Clipped Z range: {z_clip_min:.4f} to {z_clip_max:.4f}")
+print(f"Number of unique Z: {z_vals.size}")
+print("Smallest Z diff (nonzero):", np.min(z_diffs[z_diffs > 0]))
 
-# Create point cloud object
+# ----- Open3D visualization -----
 pcd = o3d.geometry.PointCloud()
-pcd.points = o3d.utility.Vector3dVector(pitch_points)
+pcd.points = o3d.utility.Vector3dVector(region_points)
 pcd.colors = o3d.utility.Vector3dVector(colors)
 
-# Visualize
-o3d.visualization.draw_geometries([pcd], window_name="Cricket Pitch: Linear Z Color (Red High)")
+# Show the point cloud
+o3d.visualization.draw_geometries([pcd], window_name="Contrast-Stretched Pitch Z Colors")

@@ -18,7 +18,10 @@ def grass_crack_detection(points):
     region_points = points[mask]
     XY = region_points[:, :2]
     Z = region_points[:, 2]
-
+    # Calculate and print point density
+    area = (x_max - x_min) * (y_max - y_min)  # in square meters
+    density = len(region_points) / area if area > 0 else 0
+    print(f"Point density: {density:.2f} points/m²")
     # Use a constant ground height (median)
     ground_height = np.median(Z)
     print(f"Constant ground height = {ground_height:.4f} m")

@@ -2,9 +2,7 @@ import cv2
 import numpy as np
 
 
-def Colour_correct(img_path):
-    img = cv2.imread(img_path)
-    assert img is not None, "Image not found"
+def Colour_correct(img):
     # Color correction (CLAHE)
     lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
     l, a, b = cv2.split(lab)

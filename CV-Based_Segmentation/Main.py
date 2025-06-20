@@ -5,7 +5,8 @@ from src.Strip_and_segment_panaroma import Segmentation
 
 
 def main():
-    img = cv2.imread('pitch_wankhede.png')
+    path = 'pitch_wankhede.png'
+    img = cv2.imread(path)
     assert img is not None, "Image not found"
 
     # Color correction (CLAHE)
@@ -26,7 +27,7 @@ def main():
 
 
     # Save the output image
-    cv2.imwrite("refined_pitch_output.png", output)
+    cv2.imwrite("refined_pitch_output_all_green.png", output)
     print("Saved: refined_pitch_output.png")
 if __name__ == "__main__":
     main()

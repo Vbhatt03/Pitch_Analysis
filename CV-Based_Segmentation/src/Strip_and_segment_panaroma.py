@@ -33,14 +33,14 @@ def Segmentation(img, img_corrected, strip_height, min_crack_area,
             component = (labels == i)
             if area >= min_crack_area:
                 crack_mask[component] = 255
-            else:
-                # For small cracks, only keep if in grass region
-                if np.any((grass_mask > 0) & component):
-                    crack_mask[component] = 255
+            # else:
+            #     # For small cracks, only keep if in grass region
+            #     if np.any((grass_mask > 0) & component):
+            #         crack_mask[component] = 255
 
         # Set grass (green or dead) to white (not crack)
         grass_only = (grass_mask > 0) & (crack_mask == 0)
         output[y:y_end][grass_only] = [255, 255, 255]
         # Set cracks to red for visibility
         output[y:y_end][crack_mask > 0] = [0, 0, 255]
-        return output
+    return output

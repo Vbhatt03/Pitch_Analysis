@@ -1,0 +1,2 @@
+Crack coverage: 0.00%
+Grass coverage: 47.96%

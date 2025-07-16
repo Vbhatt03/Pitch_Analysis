@@ -1,0 +1,45 @@
+Day 1:
+  Rough | Rough | Rough
+  Rough | Rough | Rough
+  Rough | Rough | Rough
+
+Day 2:
+  Rough | Grass | Grass
+  Rough | Grass | Rough
+  Rough | Grass | Grass
+
+Day 3:
+  Rough | Grass | Rough
+  Rough | Grass | Rough
+  Rough | Grass | Rough
+
+Day 4:
+  Rough | Grass | Rough
+  Grass | Grass | Rough
+  Rough | Grass | Rough
+
+Day 5:
+  Grass | Grass | Rough
+  Grass | Grass | Rough
+  Grass | Grass | Rough
+
+Day 6:
+  Rough | Grass | Rough
+  Rough | Grass | Rough
+  Rough | Grass | Rough
+
+Day 7:
+  Crack | Crack | Crack
+  Crack | Crack | Crack
+  Crack | Crack | Crack
+
+Day 8:
+  Grass | Grass | Rough
+  Grass | Grass | Rough
+  Rough | Grass | Rough
+
+Day 9:
+  Grass | Grass | Grass
+  Grass | Grass | Grass
+  Grass | Grass | Grass
+

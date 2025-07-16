@@ -1,0 +1,1 @@
+output_full_albedo/DAY 1_1.png
